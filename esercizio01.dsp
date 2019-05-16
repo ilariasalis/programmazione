@@ -14,8 +14,9 @@ frq4 = vslider("f4 [style:knob]", 440,100,20000,1);
 
 process = os.oscsin(frq1), os.oscsin(frq2),
           os.oscsin(frq3), os.oscsin(frq4) <:
-      _ * (sqrt(1-pan1)), _ * (sqrt(1-pan2)),
-      _ * (sqrt(1-pan3)), _ * (sqrt(1-pan4)),
-      _ * (sqrt(pan1)), _ * (sqrt(pan2)),
-	  _ * (sqrt(pan3)), _ * (sqrt(pan4)) : _+_, _+_, _+_, _+_ : _+_, _+_;
+          _ * (sqrt(1-pan1)), _ * (sqrt(1-pan2)),
+          _ * (sqrt(1-pan3)), _ * (sqrt(1-pan4)),
+          _ * (sqrt(pan1)), _ * (sqrt(pan2)),
+	      _ * (sqrt(pan3)), _ * (sqrt(pan4)) :
+          _+_, _+_, _+_, _+_ : _+_, _+_ : _ *(0.25), _ *(0.25)
 
