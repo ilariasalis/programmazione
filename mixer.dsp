@@ -1,12 +1,14 @@
 import("stdfaust.lib");
 
-fader = vslider ("[01]volume", -70., -70., +12., 0.1) : ba.db2linear : si.smoo ;
+ctrlgroup(x) = vgroup("[01]", x);
 
-panpot = vslider ("[02]panpot [style:knob]", 0.5, 0.0, 1.0, 0.01);
+fader = ctrlgroup (vslider ("[01] VOL", -70., -70., +12., 0.1)) : ba.db2linear : si.smoo ;
+
+panpot =  ctrlgroup ((vslider ("[02] PAN [style:knob]", 0.0, -90.0, 90.0, 0.1)) +90) /180 : si.smoo ;
 
 vmeter(x) = attach (x, envelop(x) : vbargraph("[99][unit:dB]", -70, +5))
 
-with{
+with {
     envelop = abs : max ~ -(1.0/ma.SR) : max(ba.db2linear(-70)) : ba.linear2db;
 } ;
 
@@ -17,4 +19,4 @@ process = _ <:
              * (panpot), * (sqrt(panpot)) : // right lineare, right quadratico 
              ba.selectn(2, pmode), //selettore sinistro
              ba.selectn(2, pmode) : //selettore destro
-             hgroup ("meters [03]", * (fader), * (fader) : vmeter, vmeter) ;  
+             * (fader), * (fader) : vmeter, vmeter ;  
